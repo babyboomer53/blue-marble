@@ -33,7 +33,7 @@
             </LinearGradient>
          </textFill>
       </Label>
-      <ImageView fx:id="imageView" fitHeight="400.0" fitWidth="400.0" onMouseClicked="#toggleEnhancedView" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imageView" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@hellofx/BigBlueMarble.jpg" />
          </image>
