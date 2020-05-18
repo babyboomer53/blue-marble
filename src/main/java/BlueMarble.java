@@ -1,5 +1,4 @@
 
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -10,7 +9,7 @@ import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
 public class BlueMarble {
-	
+
 	private String API_KEY = "7u1nv3v73ROS0u2F65J7w14pnGpjzwCv6cruBzes";
 	private String dateAsString;
 	private String quality = "natural";
@@ -22,17 +21,22 @@ public class BlueMarble {
 		blueMarble.setDate(LocalDate.now().minusDays(1).toString());
 		return blueMarble.getImage();
 	}
-	
+
 	public void setDate(String date) {
 		this.dateAsString = date;
 	}
-	
+
+	public String getDate() {
+		return this.dateAsString;
+	}
+
 	public InputStream getImage() {
 		try {
 			getMetaData();
 
-			URL url = new URL("https://api.nasa.gov/EPIC/archive/" + quality + "/" + dateAsString.replace('-', '/')
-					+ "/png/" + this.nasaImageName + ".png?api_key=" + API_KEY);
+			URL url = new URL("https://api.nasa.gov/EPIC/archive/" + quality
+					+ "/" + dateAsString.replace('-', '/') + "/png/"
+					+ this.nasaImageName + ".png?api_key=" + API_KEY);
 			return url.openStream();
 
 		} catch (Exception e) {
@@ -41,9 +45,11 @@ public class BlueMarble {
 	}
 
 	private void getMetaData() throws IOException, MalformedURLException {
-		String metaQueryURL = "https://epic.gsfc.nasa.gov/api/" + quality + "/date/" + dateAsString;
+		String metaQueryURL = "https://epic.gsfc.nasa.gov/api/" + quality
+				+ "/date/" + dateAsString;
 		InputStream metaInfoStream = new URL(metaQueryURL).openStream();
-		String metaInfoJSON = IOUtils.toString(metaInfoStream, "UTF-8").replace("[", "");
+		String metaInfoJSON = IOUtils.toString(metaInfoStream, "UTF-8")
+				.replace("[", "");
 		System.out.println(metaInfoJSON);
 		metaInfoStream.close();
 		JSONObject json = new JSONObject(metaInfoJSON);
@@ -56,6 +62,10 @@ public class BlueMarble {
 	}
 
 	public void setEnhanced(boolean b) {
-		this.quality = "enhanced";
+		if (b) {
+			this.quality = "enhanced";
+		} else if (!b) {
+			this.quality = "natural";
+		}
 	}
 }
